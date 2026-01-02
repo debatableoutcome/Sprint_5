@@ -1,4 +1,3 @@
-
 import time
 
 import locators
@@ -20,8 +19,6 @@ class TestCreateAd:
         email = 'm@mmmmm.mm'
         password = 'Mmmmm123'
 
-
-
         unique_suffix = str(int(time.time()))
         ad_title = f'{GOOD["Название"]} {unique_suffix}'
 
@@ -36,7 +33,6 @@ class TestCreateAd:
         wait.until(EC.presence_of_element_located(locators.USER_NAME))
 
         wait.until(EC.element_to_be_clickable(locators.BTN_CREATE_AD)).click()
-
         wait.until(EC.element_to_be_clickable(locators.INPUT_NAME)).send_keys(ad_title)
 
         wait.until(EC.element_to_be_clickable(locators.DROPDOWN_CATEGORY_ARROW)).click()
@@ -64,7 +60,6 @@ class TestCreateAd:
         desc.click()
         desc.click()
         desc.click()
-
         desc.clear()
         desc.send_keys(GOOD['Описание'])
 
@@ -88,15 +83,13 @@ class TestCreateAd:
         card = None
         max_pages = 10
 
-        for page in range(max_pages):
-            # дебаг: что сейчас на странице
-            counter_text = wait.until(EC.presence_of_element_located(locators.PROFILE_PAGINATION_COUNTER)).text
-            titles_now = [el.text for el in driver.find_elements(*locators.PROFILE_CARD_TITLES)]
-            print(f'PAGE {page + 1} | {counter_text} | titles: {titles_now}')
-
+        for _ in range(max_pages):
             titles = driver.find_elements(*card_title_locator)
             if titles:
-                card = titles[0].find_element(By.XPATH, "./ancestor::div[contains(@class,'card')]")
+                card = titles[0].find_element(
+                    By.XPATH,
+                    "./ancestor::div[contains(@class,'card')]"
+                )
                 break
 
             next_buttons = driver.find_elements(*locators.PROFILE_PAGINATION_NEXT)
@@ -107,18 +100,25 @@ class TestCreateAd:
             if not next_btn.is_enabled() or next_btn.get_attribute('disabled'):
                 break
 
-            # ждём реального обновления списка: меняется первый заголовок карточки
-            first_title_before = driver.find_element(*locators.PROFILE_FIRST_CARD_TITLE).text
+            first_title_before = driver.find_element(
+                *locators.PROFILE_FIRST_CARD_TITLE
+            ).text
 
             next_btn.click()
 
             wait.until_not(
-                EC.text_to_be_present_in_element(locators.PROFILE_FIRST_CARD_TITLE, first_title_before)
+                EC.text_to_be_present_in_element(
+                    locators.PROFILE_FIRST_CARD_TITLE,
+                    first_title_before
+                )
             )
 
-        assert card is not None, 'Карточка не найдена ни на одной странице профиля'
+        assert card is not None
 
-        price_locator = (By.XPATH, ".//div[contains(@class, 'price')]//h2[contains(@class, 'h2')]")
+        price_locator = (
+            By.XPATH,
+            ".//div[contains(@class,'price')]//h2[contains(@class,'h2')]"
+        )
         price_text = card.find_element(*price_locator).text
 
         digits = ''.join(ch for ch in price_text if ch.isdigit())
