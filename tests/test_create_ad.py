@@ -56,10 +56,6 @@ class TestCreateAd:
 
         desc = wait.until(EC.presence_of_element_located(locators.TEXTAREA_DESC))
         driver.execute_script('arguments[0].scrollIntoView({block: \'center\'});', desc)
-
-        desc.click()
-        desc.click()
-        desc.click()
         desc.clear()
         desc.send_keys(GOOD['Описание'])
 
@@ -70,26 +66,23 @@ class TestCreateAd:
         wait.until(EC.element_to_be_clickable(locators.BTN_PUBLISH_AD)).click()
         wait.until(EC.invisibility_of_element_located(locators.BTN_PUBLISH_AD))
 
-        wait.until(EC.element_to_be_clickable(locators.BTN_USER_AVATAR))
-        driver.find_element(*locators.BTN_USER_AVATAR).click()
-
+        wait.until(EC.element_to_be_clickable(locators.BTN_USER_AVATAR)).click()
         wait.until(EC.presence_of_element_located(locators.PROFILE_TITLE_MY_ADS))
 
         card_title_locator = (
             By.XPATH,
-            f"//h2[contains(@class,'h2') and normalize-space()='{ad_title}']"
+            f'//h2[contains(@class,\'h2\') and normalize-space()=\'{ad_title}\']'
         )
 
         card = None
         max_pages = 10
 
         for _ in range(max_pages):
+            wait.until(EC.presence_of_element_located(locators.PROFILE_PAGINATION_COUNTER))
+
             titles = driver.find_elements(*card_title_locator)
             if titles:
-                card = titles[0].find_element(
-                    By.XPATH,
-                    "./ancestor::div[contains(@class,'card')]"
-                )
+                card = titles[0].find_element(By.XPATH, './ancestor::div[contains(@class,\'card\')]')
                 break
 
             next_buttons = driver.find_elements(*locators.PROFILE_PAGINATION_NEXT)
@@ -100,10 +93,7 @@ class TestCreateAd:
             if not next_btn.is_enabled() or next_btn.get_attribute('disabled'):
                 break
 
-            first_title_before = driver.find_element(
-                *locators.PROFILE_FIRST_CARD_TITLE
-            ).text
-
+            first_title_before = driver.find_element(*locators.PROFILE_FIRST_CARD_TITLE).text
             next_btn.click()
 
             wait.until_not(
@@ -113,12 +103,9 @@ class TestCreateAd:
                 )
             )
 
-        assert card is not None
+        assert card is not None, 'Карточка не найдена ни на одной странице профиля'
 
-        price_locator = (
-            By.XPATH,
-            ".//div[contains(@class,'price')]//h2[contains(@class,'h2')]"
-        )
+        price_locator = (By.XPATH, './/div[contains(@class,\'price\')]//h2[contains(@class,\'h2\')]')
         price_text = card.find_element(*price_locator).text
 
         digits = ''.join(ch for ch in price_text if ch.isdigit())

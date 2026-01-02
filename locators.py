@@ -20,6 +20,10 @@ INPUT_REPEAT_PASSWORD = (By.NAME, 'submitPassword')
 INPUT_NAME = (By.NAME, 'name')
 INPUT_PRICE = (By.NAME, 'price')
 TEXTAREA_DESC = (By.XPATH, '//textarea[@name=\'description\' and @placeholder=\'Описание товара\']')
+EMAIL_ERROR_WRAP = (By.XPATH, "//input[@name='email']/parent::div[contains(@class, 'input_inputError')]")
+PASSWORD_ERROR_WRAP = (By.XPATH, "//input[@name='password']/parent::div[contains(@class, 'input_inputError')]")
+REPEAT_PASSWORD_ERROR_WRAP = (By.XPATH, "//input[@name='submitPassword']/parent::div[contains(@class, 'input_inputError')]")
+
 
 
 
@@ -30,13 +34,14 @@ DROPDOWN_CITY_ARROW = (By.XPATH, "//input[@name='city']/following-sibling::butto
 USER_AVATAR = (By.CLASS_NAME, 'circleSmall')
 USER_NAME = (By.CSS_SELECTOR, 'h3.profileText.name')
 
-POPUP_AUTH_TITLE = (By.XPATH, "//div[contains(text(), 'Чтобы разместить объявление')]")
+POPUP_AUTH_TITLE = (By.XPATH, "//h1[contains(@class,'h1') and contains(., 'Чтобы разместить объявление')]")
+
 REG_ERROR_TEXT = (By.XPATH, "//span[contains(@class, 'input_span') and text()='Ошибка']")
 
 PROFILE_TITLE_MY_ADS = (By.XPATH, "//h1[contains(text(), 'Мои объявления')]")
 PROFILE_PAGINATION_NEXT = (By.CSS_SELECTOR, 'button.arrowButton--right')
 PROFILE_PAGINATION_COUNTER = (By.XPATH, "//p[contains(@class,'spanGlobal') and contains(normalize-space(), 'из')]")
-PROFILE_CARD_TITLES = (By.CSS_SELECTOR, 'div.card h2.h2')          # все заголовки карточек на странице
+PROFILE_CARD_TITLES = (By.CSS_SELECTOR, 'div.card h2.h2')
 PROFILE_FIRST_CARD_TITLE = (By.CSS_SELECTOR, 'div.card h2.h2')
 
 
