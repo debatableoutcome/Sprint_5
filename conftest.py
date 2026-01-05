@@ -5,13 +5,11 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 @pytest.fixture
-def driver(request):
+def driver():
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service)
     driver.get('https://qa-desk.stand.praktikum-services.ru/')
 
-    def fin():
-        driver.quit()
+    yield driver
 
-    request.addfinalizer(fin)
-    return driver
+    driver.quit()
