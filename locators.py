@@ -1,4 +1,3 @@
-
 from selenium.webdriver.common.by import By
 
 BTN_ENTER_REG = (By.XPATH, "//button[text()='Вход и регистрация']")
@@ -19,14 +18,12 @@ INPUT_PASSWORD = (By.NAME, 'password')
 INPUT_REPEAT_PASSWORD = (By.NAME, 'submitPassword')
 INPUT_NAME = (By.NAME, 'name')
 INPUT_PRICE = (By.NAME, 'price')
-TEXTAREA_DESC = (By.XPATH, '//textarea[@name=\'description\' and @placeholder=\'Описание товара\']')
+
+TEXTAREA_DESC = (By.XPATH, "//textarea[@name='description' and @placeholder='Описание товара']")
+
 EMAIL_ERROR_WRAP = (By.XPATH, "//input[@name='email']/parent::div[contains(@class, 'input_inputError')]")
 PASSWORD_ERROR_WRAP = (By.XPATH, "//input[@name='password']/parent::div[contains(@class, 'input_inputError')]")
 REPEAT_PASSWORD_ERROR_WRAP = (By.XPATH, "//input[@name='submitPassword']/parent::div[contains(@class, 'input_inputError')]")
-
-
-
-
 
 DROPDOWN_CATEGORY_ARROW = (By.XPATH, "//input[@name='category']/following-sibling::button[@type='button']")
 DROPDOWN_CITY_ARROW = (By.XPATH, "//input[@name='city']/following-sibling::button[@type='button']")
@@ -42,6 +39,3 @@ PROFILE_TITLE_MY_ADS = (By.XPATH, "//h1[contains(text(), 'Мои объявле�
 PROFILE_PAGINATION_NEXT = (By.CSS_SELECTOR, 'button.arrowButton--right')
 PROFILE_PAGINATION_COUNTER = (By.XPATH, "//p[contains(@class,'spanGlobal') and contains(normalize-space(), 'из')]")
 PROFILE_CARD_TITLES = (By.CSS_SELECTOR, 'div.card div.about h2.h2')
-
-
-
