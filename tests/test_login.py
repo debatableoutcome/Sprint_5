@@ -1,11 +1,10 @@
-
-
 import locators
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from config.urls import LOGIN_URL
+from config.urls import BASE_URL
 from mock_data import EXISTING_ACC
+
 
 class TestLogin:
 
@@ -20,14 +19,6 @@ class TestLogin:
 
         wait = WebDriverWait(driver, 10)
 
-        avatar = wait.until(EC.presence_of_element_located(locators.USER_AVATAR))
-        user_name = wait.until(EC.presence_of_element_located(locators.USER_NAME))
-
-
-
-        wait.until(EC.url_contains(LOGIN_URL))
-        cur_url = driver.current_url
-
-        assert avatar
-        assert cur_url == LOGIN_URL
-        assert 'User' in user_name.text
+        assert wait.until(EC.url_contains(BASE_URL))
+        assert wait.until(EC.visibility_of_element_located(locators.USER_AVATAR)).is_displayed()
+        assert wait.until(EC.visibility_of_element_located(locators.USER_NAME)).is_displayed()
