@@ -20,5 +20,5 @@ class TestLogin:
         wait = WebDriverWait(driver, 10)
 
         assert wait.until(EC.url_contains(BASE_URL))
-        assert wait.until(EC.visibility_of_element_located(locators.USER_AVATAR)).is_displayed()
-        assert wait.until(EC.visibility_of_element_located(locators.USER_NAME)).is_displayed()
+        assert wait.until(EC.visibility_of_element_located(locators.USER_AVATAR))
+        assert wait.until(EC.visibility_of_element_located(locators.USER_NAME))
