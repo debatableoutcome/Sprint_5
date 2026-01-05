@@ -41,7 +41,7 @@ REG_ERROR_TEXT = (By.XPATH, "//span[contains(@class, 'input_span') and text()='�
 PROFILE_TITLE_MY_ADS = (By.XPATH, "//h1[contains(text(), 'Мои объявления')]")
 PROFILE_PAGINATION_NEXT = (By.CSS_SELECTOR, 'button.arrowButton--right')
 PROFILE_PAGINATION_COUNTER = (By.XPATH, "//p[contains(@class,'spanGlobal') and contains(normalize-space(), 'из')]")
-PROFILE_CARD_TITLES = (By.CSS_SELECTOR, 'div.card h2.h2')
-PROFILE_FIRST_CARD_TITLE = (By.CSS_SELECTOR, 'div.card h2.h2')
+PROFILE_CARD_TITLES = (By.CSS_SELECTOR, 'div.card div.about h2.h2')
+
 
 

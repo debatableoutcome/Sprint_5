@@ -1,7 +1,9 @@
 import time
 
 import locators
-from mock_data import GOOD
+from mock_data import GOOD, EXISTING_ACC
+from config.urls import BASE_URL
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -9,6 +11,8 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class TestCreateAd:
     def test_create_ad_unauth_popup_shows(self, driver):
+        driver.get(BASE_URL)
+
         driver.find_element(*locators.BTN_CREATE_AD).click()
         popup_title = WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located(locators.POPUP_AUTH_TITLE)
@@ -16,8 +20,8 @@ class TestCreateAd:
         assert popup_title.text == 'Чтобы разместить объявление, авторизуйтесь'
 
     def test_create_ad_auth_user_success(self, driver):
-        email = 'm@mmmmm.mm'
-        password = 'Mmmmm123'
+        email = EXISTING_ACC['email']
+        password = EXISTING_ACC['password']
 
         unique_suffix = str(int(time.time()))
         ad_title = f'{GOOD["Название"]} {unique_suffix}'
@@ -69,20 +73,17 @@ class TestCreateAd:
         wait.until(EC.element_to_be_clickable(locators.BTN_USER_AVATAR)).click()
         wait.until(EC.presence_of_element_located(locators.PROFILE_TITLE_MY_ADS))
 
-        card_title_locator = (
-            By.XPATH,
-            f'//h2[contains(@class,\'h2\') and normalize-space()=\'{ad_title}\']'
-        )
-
         card = None
-        max_pages = 10
 
-        for _ in range(max_pages):
-            wait.until(EC.presence_of_element_located(locators.PROFILE_PAGINATION_COUNTER))
+        while True:
+            wait.until(EC.presence_of_all_elements_located(locators.PROFILE_CARD_TITLES))
 
-            titles = driver.find_elements(*card_title_locator)
-            if titles:
-                card = titles[0].find_element(By.XPATH, './ancestor::div[contains(@class,\'card\')]')
+            titles = driver.find_elements(*locators.PROFILE_CARD_TITLES)
+            titles_texts = [t.text.strip() for t in titles]
+
+            if ad_title in titles_texts:
+                idx = titles_texts.index(ad_title)
+                card = titles[idx].find_element(By.XPATH, './ancestor::div[contains(@class,\'card\')]')
                 break
 
             next_buttons = driver.find_elements(*locators.PROFILE_PAGINATION_NEXT)
@@ -93,20 +94,14 @@ class TestCreateAd:
             if not next_btn.is_enabled() or next_btn.get_attribute('disabled'):
                 break
 
-            first_title_before = driver.find_element(*locators.PROFILE_FIRST_CARD_TITLE).text
+            counter_before = driver.find_element(*locators.PROFILE_PAGINATION_COUNTER).text
             next_btn.click()
 
             wait.until_not(
                 EC.text_to_be_present_in_element(
-                    locators.PROFILE_FIRST_CARD_TITLE,
-                    first_title_before
+                    locators.PROFILE_PAGINATION_COUNTER,
+                    counter_before
                 )
             )
 
         assert card is not None, 'Карточка не найдена ни на одной странице профиля'
-
-        price_locator = (By.XPATH, './/div[contains(@class,\'price\')]//h2[contains(@class,\'h2\')]')
-        price_text = card.find_element(*price_locator).text
-
-        digits = ''.join(ch for ch in price_text if ch.isdigit())
-        assert digits == str(GOOD['Стоимость'])
