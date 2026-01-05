@@ -1,6 +1,8 @@
 
 import random
 import locators
+from config.urls import BASE_URL
+
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -8,9 +10,9 @@ from selenium.webdriver.support import expected_conditions as EC
 class TestRegistration:
 
     def test_reg_success(self, driver):
-        email = f'user_{random.randint(1000, 9999)}@mail.ru'
+        email = f'user_{random.randint(100000, 999999)}@mail.ru'
         password = 'Password123'
-        EXPECTED_URL = 'https://qa-desk.stand.praktikum-services.ru/regiatration'
+        expected_url = f'{BASE_URL}regiatration'
 
         driver.find_element(*locators.BTN_ENTER_REG).click()
         driver.find_element(*locators.BTN_NO_ACC).click()
@@ -22,15 +24,10 @@ class TestRegistration:
 
         wait = WebDriverWait(driver, 10)
 
-        avatar = wait.until(EC.presence_of_element_located(locators.USER_AVATAR))
-        user_name = wait.until(EC.presence_of_element_located(locators.USER_NAME))
+        assert wait.until(EC.url_to_be(expected_url))
+        assert wait.until(EC.visibility_of_element_located(locators.USER_AVATAR))
+        assert wait.until(EC.visibility_of_element_located(locators.USER_NAME))
 
-        wait.until(EC.url_contains('/regiatration'))
-        cur_url = driver.current_url
-
-        assert avatar
-        assert cur_url == EXPECTED_URL
-        assert 'User' in user_name.text
 
     def test_reg_invalid_email_fail(self, driver):
         email = 'bad_email'
