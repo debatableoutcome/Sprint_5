@@ -18,11 +18,9 @@ class TestLogout:
 
         wait = WebDriverWait(driver, 10)
 
-
-        assert wait.until(EC.visibility_of_element_located(locators.USER_AVATAR))
-        assert wait.until(EC.visibility_of_element_located(locators.USER_NAME))
-
-        driver.find_element(*locators.BTN_LOGOUT).click()
+        wait.until(EC.visibility_of_element_located(locators.USER_AVATAR))
+        wait.until(EC.visibility_of_element_located(locators.USER_NAME))
+        wait.until(EC.element_to_be_clickable(locators.BTN_LOGOUT)).click()
 
 
         assert wait.until(EC.invisibility_of_element_located(locators.USER_AVATAR))
