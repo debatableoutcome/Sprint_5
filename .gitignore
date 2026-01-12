@@ -1,0 +1,49 @@
+# ======================
+# Python
+# ======================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ======================
+# Virtual environments
+# ======================
+venv/
+.venv/
+env/
+ENV/
+
+# ======================
+# Pytest
+# ======================
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# ======================
+# Selenium / WebDriver
+# ======================
+*.log
+screenshots/
+reports/
+allure-results/
+allure-report/
+
+# ======================
+# IDE
+# ======================
+.idea/
+.vscode/
+
+# ======================
+# OS
+# ======================
+.DS_Store
+Thumbs.db
+
+# ======================
+# Project specific
+# ======================
+.env
+.env.*
